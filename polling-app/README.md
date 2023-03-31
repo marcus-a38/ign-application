@@ -70,9 +70,9 @@ Initially, I filled the *'sqlite/queries'* path with many SQL queries to be read
 
 This project is fully dependent on PyQt6. The `.ui` file generated from Qt Designer can be found in the *'python'* folder. The app has a total of 8 unique pages, each being an index under a QStackedWidget. I've mapped button 'clicked' triggers with index-changing slots in the `pyqt6app.py` file. 
 
-The slots utilize class methods from `appdb.py` to create an object (instance) of a class (table.) Then, `appdb.py` utilizes `connections.py` to access the database file and process queries. Coding with an object-oriented style in a project like this allows for much more organized, readable code. Creating object attributes mirrors the structure of the database tables and their respective columns.
+The slots utilize class methods from `appdb.py` to create an instance of a class. Each class in the code represents a table in the database, and each class instance is effectively a table instance. Then, `appdb.py` utilizes `connections.py` to access the database file and process queries. Coding with an object-oriented style in a project like this allows for much more organized, readable code. Creating object attributes mirrors the structure of the database tables and their respective columns.
 
-My Qt forms are created using **QTextEdit** and **QPushButton** widgets, with the **QPushButton**s triggering various CRUD operations. For example, the **QTextEdit** widget's text will be gathered with the *'.text()'* method. Then, the input will be inserted into placeholder spots in the unique query's script body. The **QPushButton** will trigger a connected slot, which will execute a **CREATE/UPDATE/DELETE** query with the interpolated query-string. 
+My Qt forms are created using **QTextEdit** and **QPushButton** widgets, with the **QPushButton**s triggering various CRUD operations. For example, the **QTextEdit** widget's text will be gathered with the *'.text()'* method. Then, the input will be inserted into placeholder spots in the unique query's script body. Again, the **QPushButton** will trigger a connected slot, which will execute a query with the interpolated query-string. 
 
 **Note:** Only the username and password inputs are sniffed for injection strings (currently.)
 
@@ -115,7 +115,7 @@ So, this project can be broken down into this modular hierarchy:
 
 With these short descriptions, we can now determine the flow of data. First, '*pyqt6_app.py*' grabs the path to `main.db` and `app.ui` and stores them in a global variable. A '*Connection()*' instance is created to represent the database. A '*Gui()*' instance is created, which inherits from '*QMainWindow()*.' Thus, the '*Gui()*' instance displays the contents of our '*QMainWindow*' widget.
 
-We create a '*sqlite3.Cursor()*' instance upon calling the '*.cursor()*' method for a connection. The cursor is used to perform CRUD operations, and it has extremely useful methods such as '*.execute()*', '*.executescript()*', '*.fetchone()*', and '*.fetchall().*' Before utilizing the cursor, we must use the '*get_query_strings*' function in '*query_strings.py*' to fetch the appropriate query to execute.
+We create a '*sqlite3.Cursor()*' instance upon calling the '*.cursor()*' method for a connection. The cursor is used to perform the aforementioned CRUD operations, and it has extremely useful methods such as '*.execute()*', '*.executescript()*', '*.fetchone()*', and '*.fetchall().*' Before utilizing the cursor, we must use the '*get_query_strings*' function in '*query_strings.py*' to fetch the appropriate query to execute.
 
 I've wrapped '*.execute()*' and '*.fetchall()*' in the '*query_get*' function of `appdb.py`, and '*.executescript()*' in the '*query_post*' function. These functions will interpolate the query with user input and utilize the appropriate cursor methods to alter the database.
 
