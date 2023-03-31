@@ -53,7 +53,7 @@ Next:
 2. I ran `designer.exe` from pyqt_tools
 3. I created the .ui file for my app
 
-At this point in the project, I had not actually done anything with the sqlite database. So, I got to work. I decided to write a Python module that would simplify **POST** and **GET** requests to the database. This is called `appdb.py` in the *'python'* folder. 
+At this point in the project, I had not actually done anything with the sqlite database. So, I got to work. I decided to write a Python module that would simplify SQLite CRUD operations. This is called `appdb.py` in the *'python'* folder. 
 
 (I will cover the design and development of the database further along in the *README*)
 
@@ -72,11 +72,11 @@ This project is fully dependent on PyQt6. The `.ui` file generated from Qt Desig
 
 The slots utilize class methods from `appdb.py` to create an object (instance) of a class (table.) Then, `appdb.py` utilizes `connections.py` to access the database file and process queries. Utilizing an object-oriented style in a project like this allows for much more organized, readable code. Creating object attributes mirrors the structure of the database tables and their respective columns.
 
-My Qt forms are created using **QTextEdit** and **QPushButton** widgets, with the **QPushButton** triggering either a **POST** or **GET** database request. For example, the **QTextEdit** widget's text will be gathered with the *'.text()'* method. Then, the input will be inserted into placeholder spots in the unique query's script body. The **QPushButton** will trigger a connected slot, which will execute a **POST** request with the interpolated query. 
+My Qt forms are created using **QTextEdit** and **QPushButton** widgets, with the **QPushButton** triggering either a CRUD operation. For example, the **QTextEdit** widget's text will be gathered with the *'.text()'* method. Then, the input will be inserted into placeholder spots in the unique query's script body. The **QPushButton** will trigger a connected slot, which will execute a **CREATE/UPDATE/DELETE** query with the interpolated query-string. 
 
 **Note:** Only the username and password inputs are sniffed for injection strings (currently.)
 
-Many of the pages have initialization steps or in-place actions that dynamically shift the content of the page. These shifts are performed with **GET** requests and logic. The *'.setText()'*, *'.move()'*, and *'.resize()'* methods are the most common **QtWidgets** methods that you'll see me use in this context.
+Many of the pages have initialization steps or in-place actions that dynamically shift the content of the page. These shifts are performed with **READ** queries and **QtWidget** logic. The *'.setText()'*, *'.move()'*, and *'.resize()'* methods are the most common **QtWidgets** methods that you'll see me use in this context.
 
 ***Worth Mentioning:*** The logic for hashing and dehashing passwords is dependent on bcrypt. Make sure you have this dependency installed for the downloaded version of this app.
 
