@@ -76,7 +76,7 @@ My Qt forms are created using **QTextEdit** and **QPushButton** widgets, with th
 
 **Note:** Only the username and password inputs are sniffed for injection strings (currently.)
 
-Many of the pages have initialization steps or in-place actions that dynamically shift the content of the page. These shifts are performed with **READ** queries and **QtWidget** logic. The *'.setText()'*, *'.move()'*, and *'.resize()'* methods are the most common **QtWidgets** methods that you'll see me use in this context.
+Many of the pages have initialization steps or in-place actions that dynamically shift the content of the page. These shifts are determined with **READ** operations and mostly **QtWidget** logic. The *'.setText()'*, *'.move()'*, and *'.resize()'* methods are the most common **QtWidgets** methods that you'll see me use in this context.
 
 ***Worth Mentioning:*** The logic for hashing and dehashing passwords is dependent on bcrypt. Make sure you have this dependency installed for the downloaded version of this app.
 
@@ -85,22 +85,22 @@ Many of the pages have initialization steps or in-place actions that dynamically
 ## Developing and Designing a Database
 <span>___________</span>
 
-I loosely followed the DBLC while developing this project. First, I collected the basic rules/constraints: data must be persistent and similar to IGN's in-text polls. Then, with those in mind, I created a basic ERD:
+I loosely followed the DBLC while developing this project. First, I collected the basic rules/constraints: data must be persistent and similar to IGN's in-text polls. The main objective was to track information for users, polls, poll options, and user votes-- so, with my goal and those constraints in mind, I created a basic ERD:
 
 ![Preliminary ERD](./misc/ERD.jpg)
 
 This model was comprehensive, simple, and effective. Happy with the diagram, I advanced to DBMS selection. As I mentioned previously, I was initially going to use Azure SQL services for my database and Microsoft SQL Server Management Studio as a DBMS.
 
-Due to the nature of this project, I went with an SQLite database as the data storage method. The structure and scalability work well for a project like this. I'm experienced with relational databases and SQL databases, so I didn't spend time confusing myself by looking for any other options. In my mind, flat files would not be appropriate for the app, either. This eliminated the necessity for PHP files and a server.
+Due to the nature of this project, I went with an SQLite database as the data storage method. SQLite is an inredible choice for a project like this. The developer is seldom concerned with scalability working with them, and they're: easy to create and maintain, lightweight, and embedded in the software. I'm experienced with relational databases and SQL databases, so I didn't spend any other time looking for other options. In my mind, flat files would not be appropriate for the app, either. Overall, going with an SQLite database eliminated the necessity for PHP files and a DB server.
 
-Implementing the database was very straightforward, and took only around 20 minutes to set up with example data. I also used the SQLite viewer extension on Visual Studio Code to view the data, for debugging and management purposes.
+Database implementation was very straightforward, and only around 20 minutes to get a basic model set up with example data. I used the SQLite viewer extension on Visual Studio Code to view the data. This was mostly for debugging and management purposes.
 
 <br></br>
 
 ## Database App Integration
 <span>___________</span>
 
-The sqlite3 library is included in the Python standard library (most versions.) This library makes Python + SQLite integration quick and easy. 
+The sqlite3 library is included in the Python standard library (most versions.) This library makes Python SQLite processing and management incredibly easy. 
 
 I decided to structure this project modularly, as the main `pyqt6_app.py` is long enough as is. Modular programming worked well for the app.
 
@@ -113,9 +113,11 @@ So, this project can be broken down into this modular hierarchy:
 5. `main.db` <- sqlite database
 6. `queries.sql` <- list of sql queries to execute
 
-With these short descriptions, we can now determine the flow of data. First, '*pyqt6_app.py*' grabs the path to `main.db` and `app.ui` and stores them in a global variable. A '*Connection()*' instance is created to represent the database. A '*Gui()*' instance is created, which inherits from '*QMainWindow()*.' Thus, the '*Gui()*' instance displays the contents of our '*QMainWindow*' widget.
+With these short descriptions, we can now examine the flow of data. First, '*pyqt6_app.py*' grabs the path to `main.db` and `app.ui` and stores them in a global variable. A '*Connection()*' instance is created to represent the database. A '*Gui()*' instance is created, which inherits from '*QMainWindow()*.' Thus, the '*Gui()*' instance displays the contents of our '*QMainWindow*' widget.
 
-We create a '*sqlite3.Cursor()*' instance upon calling the '*.cursor()*' method for a connection. The cursor is used to perform the aforementioned CRUD operations, and it has extremely useful methods such as '*.execute()*', '*.executescript()*', '*.fetchone()*', and '*.fetchall().*' Before utilizing the cursor, we must use the '*get_query_strings*' function in '*query_strings.py*' to fetch the appropriate query to execute.
+We create a '*sqlite3.Cursor()*' instance upon calling the '*.cursor()*' method for a connection. The cursor is used to perform the aforementioned CRUD operations, and it has extremely useful methods such as '*.execute()*', '*.executescript()*', '*.fetchone()*', and '*.fetchall().*' 
+
+Before utilizing the cursor, we must use the '*get_query_strings*' function in '*query_strings.py*' to fetch the appropriate query to execute.
 
 I've wrapped '*.execute()*' and '*.fetchall()*' in the '*query_get*' function of `appdb.py`, and '*.executescript()*' in the '*query_post*' function. These functions will interpolate the query with user input and utilize the appropriate cursor methods to alter the database.
 
