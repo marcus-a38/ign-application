@@ -70,9 +70,9 @@ Initially, I filled the *'sqlite/queries'* path with many SQL queries to be read
 
 This project is fully dependent on PyQt6. The `.ui` file generated from Qt Designer can be found in the *'python'* folder. The app has a total of 8 unique pages, each being an index under a QStackedWidget. I've mapped button 'clicked' triggers with index-changing slots in the `pyqt6app.py` file. 
 
-The slots utilize class methods from `appdb.py` to create an object (instance) of a class (table.) Then, `appdb.py` utilizes `connections.py` to access the database file and process queries. Utilizing an object-oriented style in a project like this allows for much more organized, readable code. Creating object attributes mirrors the structure of the database tables and their respective columns.
+The slots utilize class methods from `appdb.py` to create an object (instance) of a class (table.) Then, `appdb.py` utilizes `connections.py` to access the database file and process queries. Coding with an object-oriented style in a project like this allows for much more organized, readable code. Creating object attributes mirrors the structure of the database tables and their respective columns.
 
-My Qt forms are created using **QTextEdit** and **QPushButton** widgets, with the **QPushButton** triggering either a CRUD operation. For example, the **QTextEdit** widget's text will be gathered with the *'.text()'* method. Then, the input will be inserted into placeholder spots in the unique query's script body. The **QPushButton** will trigger a connected slot, which will execute a **CREATE/UPDATE/DELETE** query with the interpolated query-string. 
+My Qt forms are created using **QTextEdit** and **QPushButton** widgets, with the **QPushButton**s triggering various CRUD operations. For example, the **QTextEdit** widget's text will be gathered with the *'.text()'* method. Then, the input will be inserted into placeholder spots in the unique query's script body. The **QPushButton** will trigger a connected slot, which will execute a **CREATE/UPDATE/DELETE** query with the interpolated query-string. 
 
 **Note:** Only the username and password inputs are sniffed for injection strings (currently.)
 
